@@ -1,0 +1,57 @@
+﻿@page "/demoHotel"
+@using HiddenVilla_Server.Model
+
+<div class="border p-2 mt-2" style="background-color: azure">
+    <h2 class="text-info">Room List [USING COMPONENT]</h2>
+    <div class="row container">
+        @foreach (var room in RoomsList)
+        {
+            <div class="bg-light border p-2 col-5">
+                <h4 class="text-secondary">Room - @room.Id</h4>
+                @room.RoomName<br />
+                @room.Price.ToString("C")<br />
+                <input type="checkbox" @bind-value="room.IsActive" checked="@(room.IsActive ? "checked" : null)" /> &nbsp; Is Active <br />
+                <span>This room is @(room.IsActive?"Active":"Inactive")</span>
+                @if (room.IsActive)
+                {
+                    @foreach (var prop in room.RoomProps)
+                    {
+                        <p>@prop.Name - @prop.Value</p>
+                    }
+                }
+                <br/>
+                <input type="button" class="btn btn-danger" value="Delete"/>
+                <input type="button" class="btn btn-success" value="Edit"/>
+            </div>
+        }
+    </div>
+</div>
+
+@code
+{
+    List<BlazorRoom> RoomsList = new List<BlazorRoom>
+{
+        new()
+        {
+            Id = 101,
+            IsActive = true,
+            Price = 100,
+            RoomName = "Villa Suite One Bedroom",
+            RoomProps = new List<BlazorRoomProp>
+        {
+                new() {Id = 1, Name = "Sq Ft", Value = "330"}, new() {Id = 2, Name = "Occupancy", Value = "4"}
+            }
+        },
+        new()
+        {
+            Id = 201,
+            IsActive = false,
+            Price = 70,
+            RoomName = "Villa Suite Two Bedroom",
+            RoomProps = new List<BlazorRoomProp>
+        {
+                new() {Id = 1, Name = "Sq Ft", Value = "1150"}, new() {Id = 2, Name = "Occupancy", Value = "6"}
+            }
+        }
+    };
+}
