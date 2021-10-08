@@ -14,9 +14,14 @@ Room: @room.RoomName
 Price: @room.Price
 <br/>
 
-<input type="number" @bind-value="@room.Price" @bind-value:event="oninput"/>
+<input type="number" @bind-value="room.Price" @bind-value:event="oninput"/>
+<br/>
+<input type="checkbox" @bind-value="room.IsActive" checked="@(room.IsActive?"checked":null)"/> &nbsp; Is Active
+<br/>
+<span>This room is @(room.IsActive ? "Active" : "Inactive")</span>
+
 
 @code
 {
-    readonly BlazorRoom room = new() {Id = 1, IsActive = true, Price = 499, RoomName = "Villa Suite"};
+    readonly BlazorRoom room = new() {Id = 1, IsActive = false , Price = 499, RoomName = "Villa Suite"};
 }
