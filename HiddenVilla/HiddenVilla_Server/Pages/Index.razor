@@ -12,6 +12,9 @@ Welcome to your new app.
 Room: @room.RoomName
 <br/>
 Price: @room.Price
+<br/>
+
+<input type="number" @bind-value="@room.Price" @bind-value:event="oninput"/>
 
 @code
 {
