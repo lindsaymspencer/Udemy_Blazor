@@ -1,7 +1,19 @@
 ﻿@page "/"
+@using HiddenVilla_Server.Model
 
-<h1>Hello, world!</h1>
+@*<h1>Hello, world!</h1>
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<SurveyPrompt Title="How is Blazor working for you?" />*@
+<h2 class="bg-light border p-2">
+    First Room
+</h2>
+Room: @room.RoomName
+<br/>
+Price: @room.Price
+
+@code
+{
+    readonly BlazorRoom room = new() {Id = 1, IsActive = true, Price = 499, RoomName = "Villa Suite"};
+}
