@@ -3,37 +3,57 @@
 <div class="border p-2 mt-2" style="background-color: azure">
     <h2 class="text-info">Room List [USING COMPONENT]</h2>
     <div class="row container">
-        @foreach (BlazorRoom room in RoomsList)
+        @foreach (BlazorRoom room in thisHotel.Rooms)
         {
             <Room room="@room"></Room>
+        }
+    </div>
+    <h2 class="text-info">Hotel Amenities [ASSIGNMENT]</h2>
+    <div class="row container">
+        @foreach (BlazorAmenity am in thisHotel.Amenities)
+        {
+            <Amenity BAmenity="@am"></Amenity>
         }
     </div>
 </div>
 
 @code
 {
-    readonly List<BlazorRoom> RoomsList = new() 
+    readonly Hotel thisHotel = new()
     {
-        new() {
-            Id = 101,
-            IsActive = true, 
-            Price = 100, 
-            RoomName = "Villa Suite One Bedroom",
-            RoomProps = new List<BlazorRoomProp>
-            {
-                new() {Id = 1, Name = "Sq Ft", Value = "330"}, 
-                new() {Id = 2, Name = "Occupancy", Value = "4"}
-            }}, 
-        new()
+        Rooms = new()
         {
-            Id = 201, 
-            IsActive = false, 
-            Price = 70, 
-            RoomName = "Villa Suite Two Bedroom", 
-            RoomProps = new List<BlazorRoomProp>
+            new()
             {
-                new() {Id = 1, Name = "Sq Ft", Value = "1150"}, 
-                new() {Id = 2, Name = "Occupancy", Value = "6"}
+                Id = 101, 
+                IsActive = true, 
+                Price = 100, 
+                RoomName = "Villa Suite One Bedroom", 
+                RoomProps = new List<BlazorRoomProp> 
+                {
+                    new() {Id = 1, Name = "Sq Ft", Value = "330"}, 
+                    new() {Id = 2, Name = "Occupancy", Value = "4"}
+
+                }
+            },
+            new()
+            {
+                Id = 201, 
+                IsActive = false, 
+                Price = 70, 
+                RoomName = "Villa Suite Two Bedroom", 
+                RoomProps = new List<BlazorRoomProp>
+                {
+                    new() {Id = 1, Name = "Sq Ft", Value = "1150"}, 
+                    new() {Id = 2, Name = "Occupancy", Value = "6"}
+                }
             }
-        }};
+        },
+        Amenities = new List<BlazorAmenity>
+        {
+            new() {Id = 111, Name = "Gym", Description = "24x7 gym room available."},
+            new() {Id = 222, Name = "Pool", Description = "Pool is open from 6 am to 10 pm."},
+            new() {Id = 111, Name = "Breakfast", Description = "Enjoy free breakfast at our hotel."}
+        }
+    };
 }

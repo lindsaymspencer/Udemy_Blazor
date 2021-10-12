@@ -1,0 +1,10 @@
+﻿<div class="bg-light border p-2 col-5">
+    <h4 class="text-secondary">Amenity - @BAmenity.Id</h4>
+    @BAmenity.Name<br />
+    @BAmenity.Description<br />
+</div>
+@code {
+
+    [Parameter]
+    public BlazorAmenity BAmenity { get; set; }
+}
