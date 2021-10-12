@@ -1,0 +1,28 @@
+﻿@page "/lifecycle"
+
+<h1>Lifecycle</h1>
+
+@foreach (var item in EventType)
+{
+    @item <br/>
+}
+<div class="border">
+    <LifecycleComponent></LifecycleComponent>
+</div>
+@code {
+    List<string> EventType = new List<string>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        EventType.Add("OnInitialized is called.");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        EventType.Add("OnInitializedAsync is called.");
+        await Task.Delay(1000);
+
+    }
+}
