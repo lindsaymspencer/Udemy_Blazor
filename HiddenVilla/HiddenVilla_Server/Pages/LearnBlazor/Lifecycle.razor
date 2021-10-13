@@ -1,4 +1,5 @@
 ﻿@page "/lifecycle"
+@using System.Threading;
 
 <h1>Lifecycle</h1>
 
@@ -11,16 +12,19 @@
 </div>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<br/>@Count <button class="btn btn-primary" @onclick="StartCountdown">Click me</button>
 
 @code {
     private int currentCount = 0;
     List<string> EventType = new List<string>();
+    private int Count { get; set; } = 5;
 
     private void IncrementCount()
     {
         currentCount++;
     }
 
+    // It is executed with the component is completely loaded
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -34,6 +38,8 @@
         await Task.Delay(1000);
     }
 
+    // When a component is first initialized, and each time new or
+    // updated parameters are received from parent in the render tree.
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
@@ -46,6 +52,7 @@
         return base.OnParametersSetAsync();
     }
 
+    // Called after each render of the component.
     protected override void OnAfterRender(bool firstRender)
     {
         currentCount = firstRender ? 11111 : 99999;
@@ -59,4 +66,25 @@
         return base.OnAfterRenderAsync(firstRender);
     }
 
+    // This method returns a Bo0lean value, if true, it refreshes the UI,
+    // otherwise changes are not sent to UI.
+    protected override bool ShouldRender()
+    {
+        EventType.Add("ShouldRender is called.");
+        return base.ShouldRender();
+    }
+
+    void StartCountdown()
+    {
+        var timer = new Timer(TimeCallBack, null, 1000, 1000);
+    }
+
+    void TimeCallBack(object sender)
+    {
+        if (Count > 0)
+        {
+            Count--;
+            InvokeAsync(StateHasChanged);
+        }
+    }
 }
