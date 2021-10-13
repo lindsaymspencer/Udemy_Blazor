@@ -46,4 +46,17 @@
         return base.OnParametersSetAsync();
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        currentCount = firstRender ? 11111 : 99999;
+        EventType.Add("OnAfterRender is called.");
+        base.OnAfterRender(firstRender);
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        EventType.Add("OnAfterRenderAsync is called.");
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
 }
