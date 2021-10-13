@@ -1,6 +1,7 @@
 ﻿@using HiddenVilla_Server.Model
 <div class="bg-light border p-2 col-5">
     <h4 class="text-secondary">Room - @room.Id</h4>
+    <input type="checkbox" @onchange="RoomCheckboxSelectionChanged"/>
     @room.RoomName<br />
     @room.Price.ToString("C")<br />
     <input type="checkbox" @bind-value="room.IsActive" checked="@(room.IsActive ? "checked" : null)" /> &nbsp; Is Active <br />
@@ -17,6 +18,12 @@
 </div>
 
 @code {
-    [Parameter]
-    public BlazorRoom room { get; set; }
+    [Parameter] public BlazorRoom room { get; set; }
+    [Parameter] public EventCallback<bool> OnRoomCheckBoxSelection { get; set; }
+
+    private async Task RoomCheckboxSelectionChanged(ChangeEventArgs args)
+    {
+        await OnRoomCheckBoxSelection.InvokeAsync((bool) args.Value);
+    }
+
 }
