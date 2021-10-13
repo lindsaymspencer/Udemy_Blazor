@@ -16,7 +16,13 @@
     <div class="row container">
         @foreach (BlazorAmenity am in thisHotel.Amenities)
         {
-            <Amenity BAmenity="@am"></Amenity>
+            <Amenity BAmenity="@am" OnSelection="AmenitySelectionChanged"></Amenity>
+        }
+        @if (!string.IsNullOrEmpty(SelectedAmenity))
+        {
+            <div class="col-12">
+                <p class="text-secondary">Selected Amenity: @SelectedAmenity</p>
+            </div>
         }
     </div>
 </div>
@@ -24,9 +30,11 @@
 @code
 {
     public int SelectedRooms { get; set; } = 0;
+    public string SelectedAmenity { get; set; }
+
     readonly Hotel thisHotel = new()
     {
-        Rooms = new()
+        Rooms = new List<BlazorRoom>
         {
             new()
             {
@@ -34,30 +42,29 @@
                 IsActive = true, 
                 Price = 100, 
                 RoomName = "Villa Suite One Bedroom", 
-                RoomProps = new List<BlazorRoomProp> 
+                RoomProps = new List<BlazorRoomProp>
                 {
                     new() {Id = 1, Name = "Sq Ft", Value = "330"}, 
                     new() {Id = 2, Name = "Occupancy", Value = "4"}
-
                 }
-            },
+            }, 
             new()
             {
                 Id = 201, 
                 IsActive = false, 
                 Price = 70, 
-                RoomName = "Villa Suite Two Bedroom", 
+                RoomName = "Villa Suite Two Bedroom",
                 RoomProps = new List<BlazorRoomProp>
                 {
                     new() {Id = 1, Name = "Sq Ft", Value = "1150"}, 
                     new() {Id = 2, Name = "Occupancy", Value = "6"}
                 }
             }
-        },
+        }, 
         Amenities = new List<BlazorAmenity>
         {
-            new() {Id = 111, Name = "Gym", Description = "24x7 gym room available."},
-            new() {Id = 222, Name = "Pool", Description = "Pool is open from 6 am to 10 pm."},
+            new() {Id = 111, Name = "Gym", Description = "24x7 gym room available."}, 
+            new() {Id = 222, Name = "Pool", Description = "Pool is open from 6 am to 10 pm."}, 
             new() {Id = 111, Name = "Breakfast", Description = "Enjoy free breakfast at our hotel."}
         }
     };
@@ -72,5 +79,10 @@
         {
             SelectedRooms--;
         }
+    }
+
+    protected void AmenitySelectionChanged(string selectedAmenity)
+    {
+        SelectedAmenity = selectedAmenity;
     }
 }
