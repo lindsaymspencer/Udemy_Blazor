@@ -19,7 +19,7 @@
     </div>
     <button class="button btn-danger" @onclick="OnClick">Button to click.</button>
     
-    <GrandchildComponent MessageForGrandchild="@MessageForGrandchild"></GrandchildComponent>
+    <GrandchildComponent></GrandchildComponent>
 </div>
 
 @code {
@@ -35,8 +35,4 @@
 
     [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
-
-    [Parameter]
-    public string MessageForGrandchild { get; set; } = "This is a message from your parent";
-
 }
