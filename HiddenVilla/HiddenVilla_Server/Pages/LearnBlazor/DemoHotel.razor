@@ -16,7 +16,10 @@
     <div class="row container">
         @foreach (BlazorAmenity am in thisHotel.Amenities)
         {
-            <Amenity BAmenity="@am" OnSelection="AmenitySelectionChanged"></Amenity>
+            <Amenity BAmenity="@am" OnSelection="AmenitySelectionChanged">
+                <ChildContent1>#1</ChildContent1>
+                <ChildContent2>#2</ChildContent2>
+            </Amenity>
         }
         @if (!string.IsNullOrEmpty(SelectedAmenity))
         {
@@ -29,45 +32,10 @@
 
 @code
 {
-    public int SelectedRooms { get; set; } = 0;
+    public int SelectedRooms { get; set; }
     public string SelectedAmenity { get; set; }
 
-    readonly Hotel thisHotel = new()
-    {
-        Rooms = new List<BlazorRoom>
-        {
-            new()
-            {
-                Id = 101, 
-                IsActive = true, 
-                Price = 100, 
-                RoomName = "Villa Suite One Bedroom", 
-                RoomProps = new List<BlazorRoomProp>
-                {
-                    new() {Id = 1, Name = "Sq Ft", Value = "330"}, 
-                    new() {Id = 2, Name = "Occupancy", Value = "4"}
-                }
-            }, 
-            new()
-            {
-                Id = 201, 
-                IsActive = false, 
-                Price = 70, 
-                RoomName = "Villa Suite Two Bedroom",
-                RoomProps = new List<BlazorRoomProp>
-                {
-                    new() {Id = 1, Name = "Sq Ft", Value = "1150"}, 
-                    new() {Id = 2, Name = "Occupancy", Value = "6"}
-                }
-            }
-        }, 
-        Amenities = new List<BlazorAmenity>
-        {
-            new() {Id = 111, Name = "Gym", Description = "24x7 gym room available."}, 
-            new() {Id = 222, Name = "Pool", Description = "Pool is open from 6 am to 10 pm."}, 
-            new() {Id = 111, Name = "Breakfast", Description = "Enjoy free breakfast at our hotel."}
-        }
-    };
+    readonly Hotel thisHotel = new() {Rooms = new List<BlazorRoom> {new() {Id = 101, IsActive = true, Price = 100, RoomName = "Villa Suite One Bedroom", RoomProps = new List<BlazorRoomProp> {new() {Id = 1, Name = "Sq Ft", Value = "330"}, new() {Id = 2, Name = "Occupancy", Value = "4"}}}, new() {Id = 201, IsActive = false, Price = 70, RoomName = "Villa Suite Two Bedroom", RoomProps = new List<BlazorRoomProp> {new() {Id = 1, Name = "Sq Ft", Value = "1150"}, new() {Id = 2, Name = "Occupancy", Value = "6"}}}}, Amenities = new List<BlazorAmenity> {new() {Id = 111, Name = "Gym", Description = "24x7 gym room available."}, new() {Id = 222, Name = "Pool", Description = "Pool is open from 6 am to 10 pm."}, new() {Id = 111, Name = "Breakfast", Description = "Enjoy free breakfast at our hotel."}}};
 
     protected void RoomSelectionCounterChanged(bool isRoomSelected)
     {

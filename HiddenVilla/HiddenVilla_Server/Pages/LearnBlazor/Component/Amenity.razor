@@ -2,6 +2,7 @@
     <h4 class="text-secondary">Amenity - @BAmenity.Id</h4>
     @BAmenity.Name<br/>
     @BAmenity.Description<br/>
+    <span>From Parent Fragment - @ChildContent1 @ChildContent2</span>
 </div>
 
 @code {
@@ -12,6 +13,12 @@
     [Parameter]
     public EventCallback<string> OnSelection { get; set; }
 
+    [Parameter]
+    public RenderFragment ChildContent1 { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent2 { get; set; }
+    
     private async Task AmenitySelectionChanged(MouseEventArgs args, string name)
     {
         await OnSelection.InvokeAsync(name);
