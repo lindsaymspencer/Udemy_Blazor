@@ -1,13 +1,20 @@
 ﻿<div>
     <div class="alert alert-info">@Title</div>
     <div class="alert alert-success">
-        @if (ChildContent == null)
+        @if (SecondChildContent == null)
         {
-            <span>Hello from empty render fragment.</span>
+            @if (ChildContent == null)
+            {
+                <span>Hello from empty render fragment.</span>
+            }
+            else
+            {
+                <span>@ChildContent</span>
+            }
         }
         else
         {
-            <span>@ChildContent</span>
+            <span>@SecondChildContent</span>
         }
     </div>
     <button class="button btn-danger" @onclick="OnClick">Button to click.</button>
@@ -20,6 +27,9 @@
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment SecondChildContent { get; set; }
 
     [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
