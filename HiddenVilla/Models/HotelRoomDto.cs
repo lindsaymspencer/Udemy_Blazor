@@ -2,7 +2,7 @@
 
 namespace Models
 {
-    internal class HotelRoomDto
+    public class HotelRoomDto
     {
         [Key] public int Id { get; set; }
 
