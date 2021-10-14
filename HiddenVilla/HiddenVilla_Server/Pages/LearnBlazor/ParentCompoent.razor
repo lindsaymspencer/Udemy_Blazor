@@ -17,7 +17,7 @@
     <b>@messageText</b>
 </p>
 
-<AnotherChildComponent Placeholder="Enter Room Number (From Parent)"></AnotherChildComponent>
+<AnotherChildComponent InputAttributes="InputAttributesFromParent"></AnotherChildComponent>
 
 @code {
     private string messageText = "";
@@ -26,5 +26,12 @@
     {
         messageText = "Blazing text from parent.";
     }
+
+    public Dictionary<string, object> InputAttributesFromParent { get; set; } = new()
+    {
+        {"required", "required"}, 
+        {"placeholder", "Enter Room Number (From Parent)"},
+        {"maxlength", 5}
+    };
 
 }
