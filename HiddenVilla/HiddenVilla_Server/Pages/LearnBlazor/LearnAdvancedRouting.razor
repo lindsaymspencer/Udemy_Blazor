@@ -11,7 +11,8 @@
     <button class="btn btn-primary" @onclick="LoadParameters">Load Parameters</button>
 </p>
 
-<a href="/learnrouting" class="btn btn-secondary">Back</a>
+@*<a href="/learnrouting" class="btn btn-secondary">Back</a>*@
+<button class="btn btn-secondary" @onclick="BackToRouting">Back</button>
 
 @code {
     private string parameter1;
@@ -24,4 +25,10 @@
         parameter1 = queryParam["Param1"];
         parameter2 = queryParam["Param2"];
     }
+
+    private void BackToRouting()
+    {
+        NavigationManager.NavigateTo("learnrouting");
+    }
+
 }
