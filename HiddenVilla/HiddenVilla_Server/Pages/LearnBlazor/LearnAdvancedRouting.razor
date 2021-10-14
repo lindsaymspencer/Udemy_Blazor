@@ -1,0 +1,27 @@
+﻿@page "/learnAdvancedRouting"
+@using System.Collections.Specialized
+@using System.Web
+@inject NavigationManager NavigationManager
+
+<h3>Learn Advanced Routing</h3>
+<p>Parameter 1: @parameter1</p>
+<p>Parameter 2: @parameter2</p>
+
+<p>
+    <button class="btn btn-primary" @onclick="LoadParameters">Load Parameters</button>
+</p>
+
+<a href="/learnrouting" class="btn btn-secondary">Back</a>
+
+@code {
+    private string parameter1;
+    private string parameter2;
+
+    private void LoadParameters()
+    {
+        var absUri = new Uri(NavigationManager.Uri);
+        NameValueCollection queryParam = HttpUtility.ParseQueryString(absUri.Query);
+        parameter1 = queryParam["Param1"];
+        parameter2 = queryParam["Param2"];
+    }
+}
