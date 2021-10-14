@@ -2,17 +2,19 @@
 
 <h3 class="text-danger">Parent Child Component</h3>
 
-<CascadingValue Value="@messageForGrandchild">
-    <ChildComponent Title="This is passed from Parent Component." OnClick="ShowMessage">
-        <ChildContent>
-            Render Fragment from Parent! WhoHoo!
-            <br/>
-            <i>More information to be added.</i>
-        </ChildContent>
-        <SecondChildContent>
-            Second child component.
-        </SecondChildContent>
-    </ChildComponent>
+<CascadingValue Value="@messageForGrandchild" name="MessageFromGrandParent">
+    <CascadingValue Value="@LuckyNumber" name="GrandParentsLuckyNumber">
+        <ChildComponent Title="This is passed from Parent Component." OnClick="ShowMessage">
+            <ChildContent>
+                Render Fragment from Parent! WhoHoo!
+                <br/>
+                <i>More information to be added.</i>
+            </ChildContent>
+            <SecondChildContent>
+                Second child component.
+            </SecondChildContent>
+        </ChildComponent>
+    </CascadingValue>
 </CascadingValue>
 
 <p>
@@ -24,6 +26,7 @@
 @code {
     // Cascading parameter is based on type.
     private string messageForGrandchild = "This is a message from grandparent";
+    public string LuckyNumber { get; set; } = "7";
     private string messageText = "";
 
     private void ShowMessage(MouseEventArgs args)
