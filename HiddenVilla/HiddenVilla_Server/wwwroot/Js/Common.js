@@ -6,3 +6,17 @@
         toastr.error(message, "Operation Failed");
     }
 }
+
+window.ShowSweetAlert = (type, message) => {
+    if (type === "error") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: message,
+            footer: '<a href="">Why do I have this issue?</a>'
+        });
+    }
+    if (type === "success") {
+        Swal.fire('Sweet!', message, 'success');
+    }
+}

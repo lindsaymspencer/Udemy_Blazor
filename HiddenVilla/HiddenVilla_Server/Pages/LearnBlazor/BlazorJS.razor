@@ -6,9 +6,13 @@
 <div class="row">
     <button class="btn btn-secondary" @onclick="(()=>TestConfirmBox(ConfirmMessage))">Test Confirm Box</button>
 </div>
-<div class="row">
+<div class="row mt-4">
     <button class="btn btn-success" @onclick="TestSuccess">Test Confirm Box</button>
     <button class="btn btn-danger" @onclick="TestFailure">Test Confirm Box</button>
+</div>
+<div class="row mt-4">
+    <button class="btn btn-success" @onclick="SweetAlertSuccess">Sweet Alert Box</button>
+    <button class="btn btn-danger" @onclick="SweetAlertFailure">Sweet Alert Box</button>
 </div>
 <div class="row">
     @if (ConfirmResult)
@@ -36,6 +40,14 @@
     private async Task TestFailure()
     {
         await JsRuntime.ToasterError("Error Message");
+    }
+    private async Task SweetAlertSuccess()
+    {
+        await JsRuntime.SweetAlertSuccess("Success Message");
+    }
+    private async Task SweetAlertFailure()
+    {
+        await JsRuntime.SweetAlertError("Error Message");
     }
 
 }
