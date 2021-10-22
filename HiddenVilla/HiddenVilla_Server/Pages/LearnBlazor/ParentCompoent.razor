@@ -4,7 +4,10 @@
 
 <CascadingValue Value="@messageForGrandchild" name="MessageFromGrandParent">
     <CascadingValue Value="@LuckyNumber" name="GrandParentsLuckyNumber">
-        <ChildComponent Title="This is passed from Parent Component." OnClick="ShowMessage">
+        <ChildComponent 
+            @ref="childComp"
+            Title="This is passed from Parent Component."
+            OnClick="ShowMessage">
             <ChildContent>
                 Render Fragment from Parent! WhoHoo!
                 <br/>
@@ -21,6 +24,9 @@
     <b>@messageText</b>
 </p>
 
+<div class="row">
+    <button class="btn btn-success" @onclick="()=>childComp.ShowToasterSuccess()">Show Alert</button>
+</div>
 <AnotherChildComponent placeholder="Placeholder default"></AnotherChildComponent>
 
 @code {
@@ -28,6 +34,7 @@
     private string messageForGrandchild = "This is a message from grandparent";
     public string LuckyNumber { get; set; } = "7";
     private string messageText = "";
+    private ChildComponent childComp;
 
     private void ShowMessage(MouseEventArgs args)
     {

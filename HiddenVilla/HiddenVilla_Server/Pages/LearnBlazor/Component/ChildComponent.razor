@@ -1,4 +1,6 @@
-﻿<div>
+﻿@inject IJSRuntime JsRuntime
+
+<div>
     <div class="alert alert-info">@Title</div>
     <div class="alert alert-success">
         @if (SecondChildContent == null)
@@ -35,4 +37,9 @@
 
     [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    public async Task ShowToasterSuccess()
+    {
+        await JsRuntime.ToasterSuccess("WooHoo! Success is on its way!");
+    }
 }
