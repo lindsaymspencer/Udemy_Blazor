@@ -34,7 +34,9 @@
                             <td>@hotelRoom.Occupancy</td>
                             <td>@hotelRoom.RegularRate.ToString("C")</td>
                             <td>@hotelRoom.SqFt</td>
-                            <td></td>
+                            <td>
+                                <NavLink href="@($"hotel-room/edit/{hotelRoom.Id}")" class="btn btn-outline-dark">Edit</NavLink>
+                            </td>
                         </tr>
                     }
                 }
