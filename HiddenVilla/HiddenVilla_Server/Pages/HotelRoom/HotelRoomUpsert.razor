@@ -1,9 +1,10 @@
 ﻿@page "/hotel-room/create"
 @page "/hotel-room/edit/{Id:int}"
+@using Business.Repository.IRepository
 @using Models
-@using Business.Repository.IRepository;
 @inject IHotelRoomRepository HotelRoomRepository;
 @inject NavigationManager NavigationManager;
+@inject IJSRuntime JsRuntime;
 
 <div class="row mt-2 mb-5">
     <h3 class="col-md-12">@Title Hotel Room</h3>
@@ -11,7 +12,7 @@
         <div class="card">
             <div class="card-body">
                 <EditForm Model="@HotelRoomModel" OnValidSubmit="HandleRoomUpsert">
-                    <DataAnnotationsValidator />
+                    <DataAnnotationsValidator/>
                     <ValidationSummary></ValidationSummary>
                     <div class="form-group">
                         <label>Name</label>
@@ -48,33 +49,53 @@
 
     [Parameter]
     public int? Id { get; set; }
-    private HotelRoomDto HotelRoomModel { get; set; } = new HotelRoomDto();
+
+    private HotelRoomDto HotelRoomModel { get; set; } = new();
     public string Title { get; set; } = "Create";
 
     protected override async Task OnInitializedAsync()
     {
         if (Id != null)
         {
-            // Updating
+    // Updating
             Title = "Update";
             HotelRoomModel = await HotelRoomRepository.ReadHotelRoom(Id.Value);
         }
         else
         {
-            // Creating
+    // Creating
             HotelRoomModel = new HotelRoomDto();
         }
     }
 
     private async Task HandleRoomUpsert()
     {
-        HotelRoomDto roomDetailsByName = await HotelRoomRepository.IsRoomUnique(HotelRoomModel.Name);
-        if (roomDetailsByName != null)
+        try
         {
-            // there is duplicate room show error
-            return;
+            HotelRoomDto roomDetailsByName = await HotelRoomRepository.IsRoomUnique(HotelRoomModel.Name, HotelRoomModel.Id);
+            // NOTE: This doesn't work if you don't update the room name when updating. I expect we'll fix it later. 
+            if (roomDetailsByName != null)
+            {
+                await JsRuntime.ToasterError("Room name already exists.");
+                return;
+            }
+            if (HotelRoomModel.Id != 0 && Title == "Update")
+            {
+                HotelRoomDto updateRoomResult = await HotelRoomRepository.UpdateHotelRoom(HotelRoomModel.Id, HotelRoomModel);
+                await JsRuntime.ToasterSuccess("Hotel room updated successfully.");
+            }
+            else
+            {
+                HotelRoomDto createdResult = await HotelRoomRepository.CreateHotelRoom(HotelRoomModel);
+                await JsRuntime.ToasterSuccess("Hotel room created successfully.");
+            }
         }
-        var createdResult = await HotelRoomRepository.CreateHotelRoom(HotelRoomModel);
+        catch (Exception ex)
+        {
+    // log exception
+            Console.WriteLine(ex);
+            throw;
+        }
         NavigationManager.NavigateTo("hotel-room");
     }
 
