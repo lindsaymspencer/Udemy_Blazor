@@ -3,7 +3,6 @@
 namespace DataAccess.Data
 {
     public class HotelRoomImage
-
     {
         public int Id { get; set; }
         public int RoomId { get; set; }
