@@ -9,6 +9,7 @@ namespace Business.Repository.IRepository
         public Task<int> CreateHotelRoomImage(HotelRoomImageDto image);
         public Task<int> DeleteHotelRoomImage(int imageId);
         public Task<int> DeleteHotelRoomImageByRoomId(int roomId);
+        public Task<int> DeleteHotelRoomImageByImageUrl(string imageUrl);
         public Task<IEnumerable<HotelRoomImageDto>> GetHotelRoomImages(int roomId);
     }
 }
