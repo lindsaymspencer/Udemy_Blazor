@@ -5,6 +5,7 @@
 @using Models
 @using System.IO
 @inject IHotelRoomRepository HotelRoomRepository;
+@inject IHotelRoomImageRepository HotelRoomImageRepository;
 @inject NavigationManager NavigationManager;
 @inject IJSRuntime JsRuntime;
 @inject IFileUpload FileUpload;
@@ -76,6 +77,7 @@
 
     private HotelRoomDto HotelRoomModel { get; set; } = new();
     public string Title { get; set; } = "Create";
+    private HotelRoomImageDto RoomImage { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -105,12 +107,15 @@
             }
             if (HotelRoomModel.Id != 0 && Title == "Update")
             {
+                // Update
                 HotelRoomDto updateRoomResult = await HotelRoomRepository.UpdateHotelRoom(HotelRoomModel.Id, HotelRoomModel);
                 await JsRuntime.ToasterSuccess("Hotel room updated successfully.");
             }
             else
             {
+                // Create
                 HotelRoomDto createdResult = await HotelRoomRepository.CreateHotelRoom(HotelRoomModel);
+                await AddHotelRoomImage(createdResult);
                 await JsRuntime.ToasterSuccess("Hotel room created successfully.");
             }
         }
@@ -121,6 +126,15 @@
             throw;
         }
         NavigationManager.NavigateTo("hotel-room");
+    }
+
+    private async Task AddHotelRoomImage(HotelRoomDto roomDetails)
+    {
+        foreach (string imageUrl in HotelRoomModel.ImageUrls)
+        {
+            RoomImage = new HotelRoomImageDto {RoomId = roomDetails.Id, RoomImageUrl = imageUrl};
+            await HotelRoomImageRepository.CreateHotelRoomImage(RoomImage);
+        }
     }
 
     private async Task HandleImageUpload(InputFileChangeEventArgs arg)
@@ -168,4 +182,5 @@
             await JsRuntime.ToasterError(e.Message);
         }
     }
+
 }
