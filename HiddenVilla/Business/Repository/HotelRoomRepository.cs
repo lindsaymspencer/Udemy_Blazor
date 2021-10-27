@@ -36,7 +36,7 @@ namespace Business.Repository
             try
             {
                 HotelRoomDto hotelRoom = _mapper.Map<HotelRoom, HotelRoomDto>(
-                    await _db.HotelRooms.FirstOrDefaultAsync(x => x.Id == roomId));
+                    await _db.HotelRooms.Include(x=>x.HotelRoomImages).FirstOrDefaultAsync(x => x.Id == roomId));
                 return hotelRoom;
             }
             catch (Exception e)
@@ -50,7 +50,7 @@ namespace Business.Repository
             try
             {
                 IEnumerable<HotelRoomDto> hotelRoomDtos =
-                    _mapper.Map<IEnumerable<HotelRoom>, IEnumerable<HotelRoomDto>>(_db.HotelRooms);
+                    _mapper.Map<IEnumerable<HotelRoom>, IEnumerable<HotelRoomDto>>(_db.HotelRooms.Include(x => x.HotelRoomImages));
                 return hotelRoomDtos;
             }
             catch

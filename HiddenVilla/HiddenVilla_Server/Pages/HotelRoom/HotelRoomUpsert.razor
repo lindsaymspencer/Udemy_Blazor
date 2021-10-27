@@ -86,6 +86,10 @@
             // Updating
             Title = "Update";
             HotelRoomModel = await HotelRoomRepository.ReadHotelRoom(Id.Value);
+            if (HotelRoomModel.HotelRoomImages != null)
+            {
+                HotelRoomModel.ImageUrls = HotelRoomModel.HotelRoomImages.Select(u => u.RoomImageUrl).ToList();
+            }
         }
         else
         {
