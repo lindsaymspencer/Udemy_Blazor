@@ -1,10 +1,13 @@
 ﻿@page "/hotel-room/create"
 @page "/hotel-room/edit/{Id:int}"
 @using Business.Repository.IRepository
+@using HiddenVilla_Server.Service.IService
 @using Models
+@using System.IO
 @inject IHotelRoomRepository HotelRoomRepository;
 @inject NavigationManager NavigationManager;
 @inject IJSRuntime JsRuntime;
+@inject IFileUpload FileUpload;
 
 <div class="row mt-2 mb-5">
     <h3 class="col-md-12">@Title Hotel Room</h3>
@@ -60,13 +63,13 @@
     {
         if (Id != null)
         {
-    // Updating
+            // Updating
             Title = "Update";
             HotelRoomModel = await HotelRoomRepository.ReadHotelRoom(Id.Value);
         }
         else
         {
-    // Creating
+            // Creating
             HotelRoomModel = new HotelRoomDto();
         }
     }
@@ -95,16 +98,56 @@
         }
         catch (Exception ex)
         {
-    // log exception
+            // log exception
             Console.WriteLine(ex);
             throw;
         }
         NavigationManager.NavigateTo("hotel-room");
     }
 
-    private async Task HandleImageUpload()
+    private async Task HandleImageUpload(InputFileChangeEventArgs arg)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var images = new List<string>();
+            if (arg.GetMultipleFiles().Count > 0)
+            {
+                foreach (IBrowserFile file in arg.GetMultipleFiles())
+                {
+                    var fileInfo = new FileInfo(file.Name);
+                    if (fileInfo.Extension.ToLower() == ".jpg" || fileInfo.Extension.ToLower() == ".png" || fileInfo.Extension.ToLower() == ".jpeg")
+                    {
+                        string uploadedImagePath = await FileUpload.UploadFile(file);
+                        images.Add(uploadedImagePath);
+                    }
+                    else
+                    {
+                        await JsRuntime.ToasterError("Please select .jpg/ .jpeg/ .png file only");
+                        return;
+                    }
+                }
+                if (images.Any())
+                {
+                    if (HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Any())
+                    {
+                        HotelRoomModel.ImageUrls.AddRange(images);
+                    }
+                    else
+                    {
+                        HotelRoomModel.ImageUrls = new List<string>();
+                        HotelRoomModel.ImageUrls.AddRange(images);
+                    }
+                }
+                else
+                {
+                    await JsRuntime.ToasterError("Image uploading Failed");
+                    return;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            await JsRuntime.ToasterError(e.Message);
+        }
     }
-
 }
