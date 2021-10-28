@@ -44,9 +44,9 @@
                         <InputFile OnChange="HandleImageUpload" multiple></InputFile>
                         <div class="row">
                             @if (IsImageUploadProcessStarted)
-                            { 
+                            {
                                 <div class="col">
-                                    <span><i class="fa fa-spin fa-spiner"></i>Please wait . . . images are uploading.</span>
+                                    <span><i class="fa fa-spin fa-spinner"></i>Please wait . . . images are uploading.</span>
                                 </div>
                             }
                             @if (HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Count > 0)
