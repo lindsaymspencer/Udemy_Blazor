@@ -3,6 +3,7 @@
 @using Business.Repository.IRepository
 @inject IHotelRoomRepository HotelRoomRepository
 @inject IJSRuntime JsRuntime
+@inject HiddenVilla_Server.Service.IService.IFileUpload FileUpload
 
 <div class="row mt-4">
     <div class="col-8">
@@ -53,7 +54,7 @@
     </div>
 </div>
 
-<DeleteConfirmation></DeleteConfirmation>
+<DeleteConfirmation ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
 
 @code {
     private IEnumerable<HotelRoomDto> HotelRooms { get; set; } = new List<HotelRoomDto>();
@@ -74,6 +75,11 @@
     {
         if (isConfirmed && DeleteRoomId != null)
         {
+            HotelRoomDto hotelRoom = await HotelRoomRepository.ReadHotelRoom(DeleteRoomId.Value);
+            foreach (HotelRoomImageDto image in hotelRoom.HotelRoomImages)
+            {
+                FileUpload.DeleteFIle(image.RoomImageUrl.Replace($"RoomImages/",""));
+            }
             await HotelRoomRepository.DeleteHotelRoom(DeleteRoomId.Value);
             await JsRuntime.ToasterSuccess("Hotel Room Deleted Successfully");
             HotelRooms = await HotelRoomRepository.ReadHotelRooms();
