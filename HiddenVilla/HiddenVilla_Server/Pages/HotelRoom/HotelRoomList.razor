@@ -54,11 +54,12 @@
     </div>
 </div>
 
-<DeleteConfirmation ConfirmationChanged="ConfirmDelete_Click"></DeleteConfirmation>
+<DeleteConfirmation ConfirmationChanged="ConfirmDelete_Click" IsParentComponentProcessing="IsProcessing"></DeleteConfirmation>
 
 @code {
     private IEnumerable<HotelRoomDto> HotelRooms { get; set; } = new List<HotelRoomDto>();
     private int? DeleteRoomId { get; set; } = null;
+    private bool IsProcessing { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,6 +74,7 @@
 
     public async Task ConfirmDelete_Click(bool isConfirmed)
     {
+        IsProcessing = true;
         if (isConfirmed && DeleteRoomId != null)
         {
             HotelRoomDto hotelRoom = await HotelRoomRepository.ReadHotelRoom(DeleteRoomId.Value);
@@ -85,6 +87,7 @@
             HotelRooms = await HotelRoomRepository.ReadHotelRooms();
         }
         await JsRuntime.InvokeVoidAsync("HideDeleteConfirmationModal");
+        IsProcessing = false;
     }
 
 }
