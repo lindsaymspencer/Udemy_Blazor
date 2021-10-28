@@ -43,6 +43,12 @@
                     <div class="form-group">
                         <InputFile OnChange="HandleImageUpload" multiple></InputFile>
                         <div class="row">
+                            @if (IsImageUploadProcessStarted)
+                            { 
+                                <div class="col">
+                                    <span><i class="fa fa-spin fa-spiner"></i>Please wait . . . images are uploading.</span>
+                                </div>
+                            }
                             @if (HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Count > 0)
                             {
                                 int serial = 1;
@@ -79,6 +85,9 @@
     private HotelRoomDto HotelRoomModel { get; set; } = new();
     public string Title { get; set; } = "Create";
     private HotelRoomImageDto RoomImage { get; set; } = new();
+    private List<string> DeletedImageNames { get; set; }
+    private bool IsImageUploadProcessStarted { get; set; } = false;
+
     protected override async Task OnInitializedAsync()
     {
         if (Id != null)
@@ -97,7 +106,6 @@
             HotelRoomModel = new HotelRoomDto();
         }
     }
-    private List<string> DeletedImageNames { get; set; }
 
     private async Task HandleRoomUpsert()
     {
@@ -161,6 +169,7 @@
 
     private async Task HandleImageUpload(InputFileChangeEventArgs arg)
     {
+        IsImageUploadProcessStarted = true;
         try
         {
             var images = new List<string>();
@@ -198,6 +207,7 @@
                     return;
                 }
             }
+            IsImageUploadProcessStarted = false;
         }
         catch (Exception e)
         {
