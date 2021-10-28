@@ -2,6 +2,7 @@
 @using Models
 @using Business.Repository.IRepository
 @inject IHotelRoomRepository HotelRoomRepository
+@inject IJSRuntime JsRuntime
 
 <div class="row mt-4">
     <div class="col-8">
@@ -16,40 +17,42 @@
     <div class="col-md-12">
         <table class="table table-bordered table-hover">
             <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Occupancy</th>
-                    <th>Rate</th>
-                    <th>Sq.Ft</th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>Name</th>
+                <th>Occupancy</th>
+                <th>Rate</th>
+                <th>Sq.Ft</th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
-                @if (HotelRooms.Any())
-                {
-                    foreach (HotelRoomDto hotelRoom in HotelRooms)
-                    {
-                        <tr>
-                            <td>@hotelRoom.Name</td>
-                            <td>@hotelRoom.Occupancy</td>
-                            <td>@hotelRoom.RegularRate.ToString("C")</td>
-                            <td>@hotelRoom.SqFt</td>
-                            <td>
-                                <NavLink href="@($"hotel-room/edit/{hotelRoom.Id}")" class="btn btn-outline-dark">Edit</NavLink>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
+            @if (HotelRooms.Any())
+            {
+                foreach (HotelRoomDto hotelRoom in HotelRooms)
                 {
                     <tr>
-                        <td colspan="5">No records found.</td>
+                        <td>@hotelRoom.Name</td>
+                        <td>@hotelRoom.Occupancy</td>
+                        <td>@hotelRoom.RegularRate.ToString("C")</td>
+                        <td>@hotelRoom.SqFt</td>
+                        <td>
+                            <NavLink href="@($"hotel-room/edit/{hotelRoom.Id}")" class="btn btn-outline-dark">Edit</NavLink>
+                        </td>
                     </tr>
                 }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">No records found.</td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
 </div>
+
+<DeleteConfirmation></DeleteConfirmation>
 
 @code {
     private IEnumerable<HotelRoomDto> HotelRooms { get; set; } = new List<HotelRoomDto>();
@@ -58,4 +61,10 @@
     {
         HotelRooms = await HotelRoomRepository.ReadHotelRooms();
     }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
 }

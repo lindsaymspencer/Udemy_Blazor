@@ -20,3 +20,11 @@ window.ShowSweetAlert = (type, message) => {
         Swal.fire('Sweet!', message, 'success');
     }
 }
+
+function ShowDeleteConfirmationModal() {
+    $("#deleteConfirmationModal").modal('show');
+}
+
+function HideDeleteConfirmationModal() {
+    $("#deleteConfirmationModal").modal('hide');
+}
