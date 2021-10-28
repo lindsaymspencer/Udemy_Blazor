@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Business.Repository.IRepository;
@@ -87,6 +89,15 @@ namespace Business.Repository
             HotelRoom roomDetails = await _db.HotelRooms.FindAsync(roomId);
             if (roomDetails != null)
             {
+                var allImages = await _db.HotelRoomImages.Where(x => x.RoomId == roomId).ToListAsync();
+                foreach (var image in allImages)
+                {
+                    if (File.Exists(image.RoomImageUrl))
+                    {
+                        File.Delete(image.RoomImageUrl);
+                    }
+                }
+                _db.HotelRoomImages.RemoveRange(allImages);
                 _db.HotelRooms.Remove(roomDetails);
                 return await _db.SaveChangesAsync();
             }
